@@ -1,27 +1,27 @@
 package assignment1;
 
 public class UpOrDownCounter {
-    int counter;
-    int end;
+	private int counter;
+	private int end;
 
-    UpOrDownCounter(int start, int end) {
-        if (start == end) {
-            throw new IllegalArgumentException("Arguments 'start' and 'end' must be unique");
-        }
+	public UpOrDownCounter(int start, int end) {
+		if (start == end) {
+			throw new IllegalArgumentException("Arguments 'start' and 'end' must be unique");
+		}
 
-        this.counter = start;
-        this.end = end;
-    }
+		this.counter = start;
+		this.end = end;
+	}
 
-    int getCounter() {
-        return counter;
-    }    
+	public int getCounter() {
+		return this.counter;
+	}
 
-    boolean count() {
-        if (counter != end) {
-            counter += counter > end ? -1 : 1;
-        }
+	public boolean count() {
+		if (this.counter != this.end) {
+			this.counter += this.counter > this.end ? -1 : 1;
+		}
 
-        return counter != end;
-    }
+		return this.counter != this.end;
+	}
 }
