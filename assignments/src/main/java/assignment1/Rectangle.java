@@ -108,8 +108,14 @@ public class Rectangle {
 	}
 
 	public Rectangle union(Rectangle rect) {
-		Rectangle union = new Rectangle(this.getMinX(), this.getMinY(), this.getMaxX(), this.getMaxY());
+		Rectangle union = new Rectangle(
+				this.getMinX(),
+				this.getMinY(),
+				this.getMaxX(),
+				this.getMaxY());
+
 		union.add(rect);
+
 		return union;
 	}
 }
