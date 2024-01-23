@@ -74,8 +74,8 @@ public class StopWatch {
 			this.laps.add(0);
 		}
 
-		this.laps.add(this.getTicks()); // avslutte forrige
-		this.laps.add(this.getTicks()); // starte neste
+		this.laps.add(this.getTicks()); // avslutter forrige
+		this.laps.add(this.getTicks()); // starter neste
 	}
 
 	public void stop() {
