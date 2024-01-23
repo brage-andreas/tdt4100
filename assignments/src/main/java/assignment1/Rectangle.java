@@ -93,11 +93,7 @@ public class Rectangle {
 	}
 
 	public boolean add(Rectangle rect) {
-		if (rect.isEmpty()) {
-			return false;
-		}
-
-		if (this.contains(rect)) {
+		if (rect.isEmpty() || this.contains(rect)) {
 			return false;
 		}
 
