@@ -1,0 +1,6 @@
+bin/
+target/
+*.xtendbin
+*._trace
+.settings/
+.vscode/launch.json
