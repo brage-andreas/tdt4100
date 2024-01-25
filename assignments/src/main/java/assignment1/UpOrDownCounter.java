@@ -24,4 +24,18 @@ public class UpOrDownCounter {
 
 		return this.counter != this.end;
 	}
+
+	public String toString() {
+		return String.format("UpOrDownCounter {counter: %s, end: %s}", this.counter, this.end);
+	}
+
+	public static void main(String[] args) {
+		UpOrDownCounter counter = new UpOrDownCounter(2, -2);
+
+		System.out.println(counter);
+		System.out.println(counter.count());
+		System.out.println(counter);
+		System.out.println(counter.count());
+		System.out.println(counter);
+	}
 }

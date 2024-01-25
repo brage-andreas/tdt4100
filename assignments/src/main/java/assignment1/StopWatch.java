@@ -86,15 +86,9 @@ public class StopWatch {
 		}
 	}
 
-	public String toString() {
-		return "lol";
-	}
-
-	public static void main(String[] args) {
-	}
-
 	private int lapsAt(int index) {
 		int adjustedIndex = index < 0 ? this.laps.size() + index : index;
+
 		return this.laps.get(adjustedIndex);
 	}
 
@@ -104,5 +98,27 @@ public class StopWatch {
 
 	private boolean hasUnfinishedLaps() {
 		return this.laps.size() % 2 != 0;
+	}
+
+	public String toString() {
+		return String.format("StopWatch {stopped: %s, ticks: %s, laps: %s}", this.stopped, this.ticks, this.laps);
+	}
+
+	public static void main(String[] args) {
+		StopWatch stopWatch = new StopWatch();
+
+		System.out.println(stopWatch);
+		stopWatch.tick(3);
+		System.out.println(stopWatch);
+		stopWatch.start();
+		System.out.println(stopWatch);
+		stopWatch.tick(6);
+		System.out.println(stopWatch);
+		stopWatch.lap();
+		System.out.println(stopWatch);
+		stopWatch.tick(6);
+		System.out.println(stopWatch);
+		stopWatch.stop();
+		System.out.println(stopWatch);
 	}
 }

@@ -114,4 +114,23 @@ public class Rectangle {
 
 		return union;
 	}
+
+	public String toString() {
+		return String.format("Rectangle {x1: %s, y1: %s, x2: %s, y2: %s}", this.x1, this.y1, this.x2, this.y2);
+	}
+
+	public static void main(String[] args) {
+		Rectangle rectangle = new Rectangle(1, 2, -1, 4);
+		Rectangle rectangle2 = new Rectangle(0, 1, 1, -1);
+
+		System.out.println(rectangle);
+		System.out.println(rectangle.getHeight());
+		System.out.println(rectangle);
+		System.out.println(rectangle.contains(-1, -1));
+		System.out.println(rectangle);
+		System.out.println(rectangle.add(rectangle2));
+		System.out.println(rectangle);
+		System.out.println(rectangle.contains(-1, -1));
+		System.out.println(rectangle);
+	}
 }
