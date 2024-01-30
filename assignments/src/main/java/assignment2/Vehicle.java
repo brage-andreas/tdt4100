@@ -1,19 +1,21 @@
 package assignment2;
 
 public class Vehicle {
-	private static final String REGISTRATION_NUMBER_PATTERN = "^[A-Z]{2}[0-9]{4,5}$";
-	private static final String REGISTRATION_NUMBER_PATTERN_LONG = "^[A-Z]{2}[0-9]{5}$";
+	private static final String[] ELECTRIC_REGISTRATION_NUMBER_PREFIXES = { "EL", "EK", "EV" };
+	private static final String[] HYDROGEN_REGISTRATION_NUMBER_PREFIXES = { "HY" };
 	private static final String REGISTRATION_NUMBER_PATTERN_SHORT = "^[A-Z]{2}[0-9]{4}$";
+	private static final String REGISTRATION_NUMBER_PATTERN_LONG = "^[A-Z]{2}[0-9]{5}$";
+	private static final String REGISTRATION_NUMBER_PATTERN = "^[A-Z]{2}[0-9]{4,5}$";
 	private FuelType fuelType;
 	private String registrationNumber;
 	private Type type;
 
-	public enum Type {
-		CAR, MOTORCYCLE
+	private enum FuelType {
+		PETROL, DIESEL, HYDROGEN, ELECTRIC
 	}
 
-	public enum FuelType {
-		PETROL, DIESEL, HYDROGEN, ELECTRIC
+	private enum Type {
+		CAR, MOTORCYCLE
 	}
 
 	public Vehicle(char type, char fuelType, String licensePlate) {
@@ -23,29 +25,21 @@ public class Vehicle {
 	}
 
 	public char getVehicleType() {
-		switch (this.type) {
-			case CAR:
-				return 'C';
-			case MOTORCYCLE:
-				return 'M';
-			default:
-				throw new IllegalArgumentException("Unknown vehicle type");
-		}
+		return switch (this.type) {
+			case CAR -> 'C';
+			case MOTORCYCLE -> 'M';
+			default -> throw new IllegalArgumentException("Unknown vehicle type");
+		};
 	}
 
 	public char getFuelType() {
-		switch (this.fuelType) {
-			case PETROL:
-				return 'G';
-			case DIESEL:
-				return 'D';
-			case HYDROGEN:
-				return 'H';
-			case ELECTRIC:
-				return 'E';
-			default:
-				throw new IllegalArgumentException("Unknown fuel type");
-		}
+		return switch (this.fuelType) {
+			case PETROL -> 'G';
+			case DIESEL -> 'D';
+			case HYDROGEN -> 'H';
+			case ELECTRIC -> 'E';
+			default -> throw new IllegalArgumentException("Unknown fuel type");
+		};
 	}
 
 	public String getRegistrationNumber() {
@@ -61,45 +55,9 @@ public class Vehicle {
 			throw new IllegalArgumentException("Registration number is not valid");
 		}
 
-		boolean matchesLong = licensePlate.matches(REGISTRATION_NUMBER_PATTERN_LONG);
-		boolean matchesShort = licensePlate.matches(REGISTRATION_NUMBER_PATTERN_SHORT);
+		this.checkRegistrationNumberLength(licensePlate);
 
-		if (this.type == Type.CAR && !matchesLong) {
-			throw new IllegalArgumentException("Cars must have a long registration number");
-		}
-
-		if (this.type == Type.MOTORCYCLE && !matchesShort) {
-			throw new IllegalArgumentException("Motorcycles must have a short registration number");
-		}
-
-		final String[] ELECTRIC_PREFIXES = { "EL", "EK", "EV" };
-		final String[] HYDROGEN_PREFIXES = { "HY" };
-
-		boolean isPetrolOrDiesel = this.fuelType == FuelType.PETROL || this.fuelType == FuelType.DIESEL;
-		boolean isElectric = this.fuelType == FuelType.ELECTRIC;
-		boolean isHydrogen = this.fuelType == FuelType.HYDROGEN;
-		boolean startsWithElectricPrefix = this.startsWithAny(licensePlate, ELECTRIC_PREFIXES);
-		boolean startsWithHydrogenPrefix = this.startsWithAny(licensePlate, HYDROGEN_PREFIXES);
-
-		if (isElectric && !startsWithElectricPrefix) {
-			throw new IllegalArgumentException(
-					"Electric vehicles must have a registration number starting with 'EL', 'EK', or 'EV'");
-		} else if (!isElectric && startsWithElectricPrefix) {
-			throw new IllegalArgumentException(
-					"Vehicles using fuel other than electricity cannot have a registration number starting with 'EL', 'EK', or 'EV'");
-		}
-
-		if (isHydrogen && !startsWithHydrogenPrefix) {
-			throw new IllegalArgumentException("Hydrogen vehicles must have a registration number starting with 'HY'");
-		} else if (!isHydrogen && startsWithHydrogenPrefix) {
-			throw new IllegalArgumentException(
-					"Vehicles using fuel other than hydrogen cannot have a registration number starting with 'HY'");
-		}
-
-		if ((isPetrolOrDiesel) && (startsWithElectricPrefix || startsWithHydrogenPrefix)) {
-			throw new IllegalArgumentException(
-					"Vehicles using petrol as fuel cannot have a registration number starting with 'EL', 'EK', 'EV', or 'HY'");
-		}
+		this.checkRegistrationNumberPrefix(licensePlate);
 
 		this.registrationNumber = licensePlate;
 	}
@@ -135,6 +93,46 @@ public class Vehicle {
 		}
 
 		this.fuelType = fuelType;
+	}
+
+	private void checkRegistrationNumberLength(String licensePlate) {
+		if (this.type == Type.CAR && !licensePlate.matches(REGISTRATION_NUMBER_PATTERN_LONG)) {
+			throw new IllegalArgumentException("Car registration number must be 5 characters long");
+		}
+
+		if (this.type == Type.MOTORCYCLE && !licensePlate.matches(REGISTRATION_NUMBER_PATTERN_SHORT)) {
+			throw new IllegalArgumentException("Motorcycle registration number must be 4 characters long");
+		}
+	}
+
+	private void checkRegistrationNumberPrefix(String licensePlate) {
+		boolean isPetrolOrDiesel = this.fuelType == FuelType.PETROL || this.fuelType == FuelType.DIESEL;
+		boolean isElectric = this.fuelType == FuelType.ELECTRIC;
+		boolean isHydrogen = this.fuelType == FuelType.HYDROGEN;
+		boolean startsWithElectricPrefix = this.startsWithAny(licensePlate,
+				Vehicle.ELECTRIC_REGISTRATION_NUMBER_PREFIXES);
+		boolean startsWithHydrogenPrefix = this.startsWithAny(licensePlate,
+				Vehicle.HYDROGEN_REGISTRATION_NUMBER_PREFIXES);
+
+		if (isElectric && !startsWithElectricPrefix) {
+			throw new IllegalArgumentException(
+					"Electric vehicles must have a registration number starting with 'EL', 'EK', or 'EV'");
+		} else if (!isElectric && startsWithElectricPrefix) {
+			throw new IllegalArgumentException(
+					"Vehicles using fuel other than electricity cannot have a registration number starting with 'EL', 'EK', or 'EV'");
+		}
+
+		if (isHydrogen && !startsWithHydrogenPrefix) {
+			throw new IllegalArgumentException("Hydrogen vehicles must have a registration number starting with 'HY'");
+		} else if (!isHydrogen && startsWithHydrogenPrefix) {
+			throw new IllegalArgumentException(
+					"Vehicles using fuel other than hydrogen cannot have a registration number starting with 'HY'");
+		}
+
+		if ((isPetrolOrDiesel) && (startsWithElectricPrefix || startsWithHydrogenPrefix)) {
+			throw new IllegalArgumentException(
+					"Vehicles using petrol as fuel cannot have a registration number starting with 'EL', 'EK', 'EV', or 'HY'");
+		}
 	}
 
 	private boolean startsWithAny(String string, String[] prefixes) {
