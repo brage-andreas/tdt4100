@@ -43,7 +43,7 @@ public class Vehicle {
 	}
 
 	public String getRegistrationNumber() {
-		return registrationNumber;
+		return this.registrationNumber;
 	}
 
 	public void setRegistrationNumber(String licensePlate) {
