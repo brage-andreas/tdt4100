@@ -24,7 +24,7 @@ public class Vehicle {
 		this.setRegistrationNumber(licensePlate);
 	}
 
-	public char getVehicleType() {
+	public char getVehicleType() throws IllegalArgumentException {
 		return switch (this.type) {
 			case CAR -> 'C';
 			case MOTORCYCLE -> 'M';
@@ -32,7 +32,7 @@ public class Vehicle {
 		};
 	}
 
-	public char getFuelType() {
+	public char getFuelType() throws IllegalArgumentException {
 		return switch (this.fuelType) {
 			case PETROL -> 'G';
 			case DIESEL -> 'D';
@@ -46,7 +46,7 @@ public class Vehicle {
 		return this.registrationNumber;
 	}
 
-	public void setRegistrationNumber(String licensePlate) {
+	public void setRegistrationNumber(String licensePlate) throws IllegalArgumentException {
 		if (this.type == null || this.fuelType == null) {
 			throw new IllegalArgumentException("Registration number must be set after vehicle type and fuel type");
 		}
@@ -62,7 +62,7 @@ public class Vehicle {
 		this.registrationNumber = licensePlate;
 	}
 
-	private void setVehicleType(char typeChar) {
+	private void setVehicleType(char typeChar) throws IllegalArgumentException {
 		if (this.fuelType != null || this.registrationNumber != null) {
 			throw new IllegalArgumentException("Vehicle type must be set before fuel type and registration number");
 		}
@@ -74,7 +74,7 @@ public class Vehicle {
 		};
 	}
 
-	private void setFuelType(char fuelTypeChar) {
+	private void setFuelType(char fuelTypeChar) throws IllegalArgumentException {
 		if (this.type == null || this.registrationNumber != null) {
 			throw new IllegalArgumentException(
 					"Fuel type must be set before registration number and after vehicle type");
@@ -95,7 +95,7 @@ public class Vehicle {
 		this.fuelType = fuelType;
 	}
 
-	private void checkRegistrationNumberLength(String licensePlate) {
+	private void checkRegistrationNumberLength(String licensePlate) throws IllegalArgumentException {
 		if (this.type == Type.CAR && !licensePlate.matches(REGISTRATION_NUMBER_PATTERN_LONG)) {
 			throw new IllegalArgumentException("Car registration number must be 5 characters long");
 		}
@@ -105,7 +105,7 @@ public class Vehicle {
 		}
 	}
 
-	private void checkRegistrationNumberPrefix(String licensePlate) {
+	private void checkRegistrationNumberPrefix(String licensePlate) throws IllegalArgumentException {
 		boolean isPetrolOrDiesel = this.fuelType == FuelType.PETROL || this.fuelType == FuelType.DIESEL;
 		boolean isElectric = this.fuelType == FuelType.ELECTRIC;
 		boolean isHydrogen = this.fuelType == FuelType.HYDROGEN;
