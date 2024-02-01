@@ -78,7 +78,7 @@ public class Person {
 	private String validateEmail(String email) throws IllegalArgumentException {
 		if (!email.matches(EMAIL_REGEX)) {
 			throw new IllegalArgumentException(
-					"Email address must be in the format 'firstName.lastName@domain.countryCode'.");
+					"Email address must be in the format 'firstName.lastName@domain.countryCode'");
 		}
 
 		if (!email.startsWith(this.fullName.toLowerCase().replace(" ", "."))) {
