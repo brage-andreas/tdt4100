@@ -132,7 +132,9 @@ public class Person {
 			throw new IllegalArgumentException("'ssn' must be a valid date that matches the person's birth date");
 		}
 
-		validateGenderDigit(n3);
+		if (!validateGenderDigit(n3)) {
+			throw new IllegalArgumentException("'ssn' must have a valid gender digit");
+		}
 
 		int c1Parsed = Integer.parseInt(c1);
 		int c2Parsed = Integer.parseInt(c2);
@@ -144,13 +146,15 @@ public class Person {
 		return ssn;
 	}
 
-	private void validateGenderDigit(String n3) throws IllegalArgumentException {
+	private boolean validateGenderDigit(String n3) throws IllegalArgumentException {
 		boolean n3IsEven = Integer.parseInt(n3) % 2 == 0;
 		boolean genderIsFemale = this.gender == 'F';
 
 		if (n3IsEven && !genderIsFemale) {
-			throw new IllegalArgumentException("'ssn' must have a valid gender digit");
+			return false;
 		}
+
+		return true;
 	}
 
 	private boolean isMatchingDateInSSN(String dd, String mm, String yy) {

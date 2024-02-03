@@ -1,8 +1,8 @@
 package assignment2;
 
 public class Vehicle {
-	private static final String[] ELECTRIC_REGISTRATION_NUMBER_PREFIXES = { "EL", "EK", "EV" };
-	private static final String[] HYDROGEN_REGISTRATION_NUMBER_PREFIXES = { "HY" };
+	private static final String HYDROGEN_REGISTRATION_NUMBER_PATTERN_SHORT = "^(?!HY)[0-9]{4}$";
+	private static final String ELECTRIC_REGISTRATION_NUMBER_PATTERN = "^(?!EL|EK|EV)[0-9]{4,5}$";
 	private static final String REGISTRATION_NUMBER_PATTERN_SHORT = "^[A-Z]{2}[0-9]{4}$";
 	private static final String REGISTRATION_NUMBER_PATTERN_LONG = "^[A-Z]{2}[0-9]{5}$";
 	private static final String REGISTRATION_NUMBER_PATTERN = "^[A-Z]{2}[0-9]{4,5}$";
@@ -18,10 +18,10 @@ public class Vehicle {
 		CAR, MOTORCYCLE
 	}
 
-	public Vehicle(char type, char fuelType, String licensePlate) {
-		this.setVehicleType(type);
-		this.setFuelType(fuelType);
-		this.setRegistrationNumber(licensePlate);
+	public Vehicle(char typeCharacter, char fuelTypeCharacter, String registrationNumber) {
+		this.setVehicleType(typeCharacter);
+		this.setFuelType(fuelTypeCharacter);
+		this.setRegistrationNumber(registrationNumber);
 	}
 
 	public char getVehicleType() throws IllegalArgumentException {
@@ -46,41 +46,60 @@ public class Vehicle {
 		return this.registrationNumber;
 	}
 
-	public void setRegistrationNumber(String licensePlate) throws IllegalArgumentException {
+	public void setRegistrationNumber(String registrationNumber) throws IllegalArgumentException {
 		if (this.type == null || this.fuelType == null) {
 			throw new IllegalArgumentException("Registration number must be set after vehicle type and fuel type");
 		}
 
-		if (!licensePlate.matches(REGISTRATION_NUMBER_PATTERN)) {
+		if (!registrationNumber.matches(REGISTRATION_NUMBER_PATTERN)) {
 			throw new IllegalArgumentException("Registration number is not valid");
 		}
 
-		this.checkRegistrationNumberLength(licensePlate);
+		this.checkRegistrationNumberLength(registrationNumber);
+		this.checkRegistrationNumberPrefix(registrationNumber);
 
-		this.checkRegistrationNumberPrefix(licensePlate);
-
-		this.registrationNumber = licensePlate;
+		this.registrationNumber = registrationNumber;
 	}
 
-	private void setVehicleType(char typeChar) throws IllegalArgumentException {
+	public boolean isPetrol() {
+		return this.fuelType == FuelType.PETROL;
+	}
+
+	public boolean isDiesel() {
+		return this.fuelType == FuelType.DIESEL;
+	}
+
+	public boolean isHydrogen() {
+		return this.fuelType == FuelType.HYDROGEN;
+	}
+
+	public boolean isElectric() {
+		return this.fuelType == FuelType.ELECTRIC;
+	}
+
+	public boolean isFossil() {
+		return this.isPetrol() || this.isDiesel();
+	}
+
+	private void setVehicleType(char typeCharacter) throws IllegalArgumentException {
 		if (this.fuelType != null || this.registrationNumber != null) {
 			throw new IllegalArgumentException("Vehicle type must be set before fuel type and registration number");
 		}
 
-		this.type = switch (typeChar) {
+		this.type = switch (typeCharacter) {
 			case 'C' -> Type.CAR;
 			case 'M' -> Type.MOTORCYCLE;
 			default -> throw new IllegalArgumentException("Unknown vehicle type");
 		};
 	}
 
-	private void setFuelType(char fuelTypeChar) throws IllegalArgumentException {
+	private void setFuelType(char fuelTypeCharacter) throws IllegalArgumentException {
 		if (this.type == null || this.registrationNumber != null) {
 			throw new IllegalArgumentException(
 					"Fuel type must be set before registration number and after vehicle type");
 		}
 
-		FuelType fuelType = switch (fuelTypeChar) {
+		FuelType fuelType = switch (fuelTypeCharacter) {
 			case 'G' -> FuelType.PETROL;
 			case 'D' -> FuelType.DIESEL;
 			case 'H' -> FuelType.HYDROGEN;
@@ -106,42 +125,22 @@ public class Vehicle {
 	}
 
 	private void checkRegistrationNumberPrefix(String licensePlate) throws IllegalArgumentException {
-		boolean isPetrolOrDiesel = this.fuelType == FuelType.PETROL || this.fuelType == FuelType.DIESEL;
-		boolean isElectric = this.fuelType == FuelType.ELECTRIC;
-		boolean isHydrogen = this.fuelType == FuelType.HYDROGEN;
-		boolean startsWithElectricPrefix = this.startsWithAny(licensePlate,
-				Vehicle.ELECTRIC_REGISTRATION_NUMBER_PREFIXES);
-		boolean startsWithHydrogenPrefix = this.startsWithAny(licensePlate,
-				Vehicle.HYDROGEN_REGISTRATION_NUMBER_PREFIXES);
+		boolean startsWithElectricPrefix = licensePlate.matches(Vehicle.ELECTRIC_REGISTRATION_NUMBER_PATTERN);
+		boolean startsWithHydrogenPrefix = licensePlate.matches(Vehicle.HYDROGEN_REGISTRATION_NUMBER_PATTERN_SHORT);
 
-		if (isElectric && !startsWithElectricPrefix) {
+		if (this.isElectric() ^ startsWithElectricPrefix) {
 			throw new IllegalArgumentException(
-					"Electric vehicles must have a registration number starting with 'EL', 'EK', or 'EV'");
-		} else if (!isElectric && startsWithElectricPrefix) {
-			throw new IllegalArgumentException(
-					"Vehicles using fuel other than electricity cannot have a registration number starting with 'EL', 'EK', or 'EV'");
+					"Electric vehicles must have a registration number starting with 'EL', 'EK', or 'EV', and non-electric vehicles cannot");
 		}
 
-		if (isHydrogen && !startsWithHydrogenPrefix) {
-			throw new IllegalArgumentException("Hydrogen vehicles must have a registration number starting with 'HY'");
-		} else if (!isHydrogen && startsWithHydrogenPrefix) {
+		if (this.isHydrogen() ^ startsWithHydrogenPrefix) {
 			throw new IllegalArgumentException(
-					"Vehicles using fuel other than hydrogen cannot have a registration number starting with 'HY'");
+					"Hydrogen vehicles must have a registration number starting with 'HY', and non-hydrogen vehicles cannot");
 		}
 
-		if ((isPetrolOrDiesel) && (startsWithElectricPrefix || startsWithHydrogenPrefix)) {
+		if (this.isFossil() && (startsWithElectricPrefix || startsWithHydrogenPrefix)) {
 			throw new IllegalArgumentException(
-					"Vehicles using petrol as fuel cannot have a registration number starting with 'EL', 'EK', 'EV', or 'HY'");
+					"Petrol or diesel vehicles cannot have a registration number starting with 'EL', 'EK', 'EV', or 'HY'");
 		}
-	}
-
-	private boolean startsWithAny(String string, String[] prefixes) {
-		for (String prefix : prefixes) {
-			if (string.startsWith(prefix)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 }
