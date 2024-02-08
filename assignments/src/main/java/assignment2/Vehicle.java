@@ -1,8 +1,8 @@
 package assignment2;
 
 public class Vehicle {
-	private static final String HYDROGEN_REGISTRATION_NUMBER_PATTERN_SHORT = "^(?!HY)[0-9]{4}$";
-	private static final String ELECTRIC_REGISTRATION_NUMBER_PATTERN = "^(?!EL|EK|EV)[0-9]{4,5}$";
+	private static final String HYDROGEN_REGISTRATION_NUMBER_PATTERN = "^(?:HY)[0-9]{4,5}$";
+	private static final String ELECTRIC_REGISTRATION_NUMBER_PATTERN = "^(?:EL|EK|EV)[0-9]{4,5}$";
 	private static final String REGISTRATION_NUMBER_PATTERN_SHORT = "^[A-Z]{2}[0-9]{4}$";
 	private static final String REGISTRATION_NUMBER_PATTERN_LONG = "^[A-Z]{2}[0-9]{5}$";
 	private static final String REGISTRATION_NUMBER_PATTERN = "^[A-Z]{2}[0-9]{4,5}$";
@@ -126,7 +126,7 @@ public class Vehicle {
 
 	private void checkRegistrationNumberPrefix(String licensePlate) throws IllegalArgumentException {
 		boolean startsWithElectricPrefix = licensePlate.matches(Vehicle.ELECTRIC_REGISTRATION_NUMBER_PATTERN);
-		boolean startsWithHydrogenPrefix = licensePlate.matches(Vehicle.HYDROGEN_REGISTRATION_NUMBER_PATTERN_SHORT);
+		boolean startsWithHydrogenPrefix = licensePlate.matches(Vehicle.HYDROGEN_REGISTRATION_NUMBER_PATTERN);
 
 		if (this.isElectric() ^ startsWithElectricPrefix) {
 			throw new IllegalArgumentException(
