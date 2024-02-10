@@ -59,8 +59,8 @@ public class Person {
 		return this.gender == Gender.Female;
 	}
 
-	public void setMother(Person mother) throws IllegalArgumentException {
-		validateMother(mother);
+	public void setMother(Person newMother) throws IllegalArgumentException {
+		validateMother(newMother);
 
 		Person oldMother = this.getMother();
 
@@ -68,12 +68,12 @@ public class Person {
 			oldMother.removeChild(this);
 		}
 
-		this.mother = mother;
-		mother.addChildToList(this);
+		this.mother = newMother;
+		newMother.addChildToList(this);
 	}
 
-	public void setFather(Person father) throws IllegalArgumentException {
-		validateFather(father);
+	public void setFather(Person newFather) throws IllegalArgumentException {
+		validateFather(newFather);
 
 		Person oldFather = this.getFather();
 
@@ -81,8 +81,8 @@ public class Person {
 			oldFather.removeChild(this);
 		}
 
-		this.father = father;
-		father.addChildToList(this);
+		this.father = newFather;
+		newFather.addChildToList(this);
 	}
 
 	public void addChild(Person child) throws IllegalArgumentException {
@@ -158,19 +158,15 @@ public class Person {
 		}
 	}
 
-	private void removeParent(Person person) {
-		if (person == null) {
-			return;
-		}
-
-		if (person.is(this.getFather())) {
+	private void removeParent(Person parent) {
+		if (parent.is(this.getFather())) {
 			this.father.removeChildFromList(this);
 			this.father = null;
 
 			return;
 		}
 
-		if (person.is(this.getMother())) {
+		if (parent.is(this.getMother())) {
 			this.mother.removeChildFromList(this);
 			this.mother = null;
 
