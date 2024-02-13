@@ -41,13 +41,13 @@ public class CardDeck {
 	}
 
 	public void shufflePerfectly() {
-		int half = this.getCardCount() / 2;
+		int centerIndex = this.getCardCount() / 2;
 
 		Card[] shuffledDeck = new Card[this.getCardCount()];
 
-		for (int index = 0; index < half; index++) {
+		for (int index = 0; index < centerIndex; index++) {
 			shuffledDeck[index * 2] = this.deck[index];
-			shuffledDeck[index * 2 + 1] = this.deck[index + half];
+			shuffledDeck[index * 2 + 1] = this.deck[index + centerIndex];
 		}
 
 		this.deck = shuffledDeck;
