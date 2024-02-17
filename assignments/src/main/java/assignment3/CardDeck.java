@@ -1,5 +1,8 @@
 package assignment3;
 
+import assignment3.Card.Face;
+import assignment3.Card.Suit;
+
 public class CardDeck {
 	private Card[] deck;
 
@@ -8,22 +11,25 @@ public class CardDeck {
 			throw new IllegalArgumentException("'n' must be in range 0-13");
 		}
 
-		int numberOfSuits = Card.Suit.values().length;
-		int totalCards = n * numberOfSuits;
+		Suit[] suits = Suit.values();
+		Face[] faces = Face.values();
 
-		this.deck = new Card[totalCards];
+		int numberOfSuits = suits.length;
+		int totalNumberOfCards = n * numberOfSuits;
+
+		this.deck = new Card[totalNumberOfCards];
 
 		for (int suitIndex = 0; suitIndex < numberOfSuits; suitIndex++) {
-			int shift = n * suitIndex;
+			int faceIndexShift = n * suitIndex;
 
-			Card.Suit suit = Card.Suit.values()[suitIndex];
+			Suit suit = suits[suitIndex];
 			char suitChar = Card.SuitToChar(suit);
 
 			for (int faceIndex = 0; faceIndex < n; faceIndex++) {
-				Card.Face face = Card.Face.values()[faceIndex];
+				Face face = faces[faceIndex];
 				int faceInt = Card.FaceToInt(face);
 
-				this.deck[shift + faceIndex] = new Card(suitChar, faceInt);
+				this.deck[faceIndexShift + faceIndex] = new Card(suitChar, faceInt);
 			}
 		}
 	}
