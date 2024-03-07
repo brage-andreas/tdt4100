@@ -1,4 +1,4 @@
-package oving6.delegation.office;
+package assignment6.delegation.office;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package oving5.twitter;
+package assignment5.twitter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

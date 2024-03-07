@@ -1,4 +1,4 @@
-package oving5;
+package assignment5;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

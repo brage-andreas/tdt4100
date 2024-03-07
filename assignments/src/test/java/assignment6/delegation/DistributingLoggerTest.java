@@ -1,4 +1,4 @@
-package oving6.delegation;
+package assignment6.delegation;
 
 import java.io.ByteArrayOutputStream;
 

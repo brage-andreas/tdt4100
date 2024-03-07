@@ -1,4 +1,4 @@
-package oving6.observable;
+package assignment6.observable;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

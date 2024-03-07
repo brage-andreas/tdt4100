@@ -1,4 +1,4 @@
-package oving5;
+package assignment5;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

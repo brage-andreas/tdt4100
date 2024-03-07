@@ -1,4 +1,4 @@
-package oving6.observable;
+package assignment6.observable;
 
 import java.util.Arrays;
 import java.util.List;
