@@ -29,21 +29,15 @@ public class BinaryComputingIterator implements Iterator<Double> {
     }
 
     public boolean hasNext() {
-        boolean firstIteratorDrained = !this.firstIterator.hasNext();
-        boolean secondIteratorDrained = !this.secondIterator.hasNext();
-
-        boolean firstIteratorHasNoDefault = this.firstDefault == null;
-        boolean secondIteratorHasNoDefault = this.secondDefault == null;
-
-        if (firstIteratorDrained && secondIteratorDrained) {
+        if (!this.firstIterator.hasNext() && !this.secondIterator.hasNext()) {
             return false;
         }
 
-        if (firstIteratorDrained && firstIteratorHasNoDefault) {
+        if (!this.firstIterator.hasNext() && this.firstDefault == null) {
             return false;
         }
 
-        if (secondIteratorDrained && secondIteratorHasNoDefault) {
+        if (!this.secondIterator.hasNext() && this.secondDefault == null) {
             return false;
         }
 
