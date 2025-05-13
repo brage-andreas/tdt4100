@@ -1,6 +1,7 @@
 package assignment5;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.function.BinaryOperator;
 
 public class BinaryComputingIterator implements Iterator<Double> {
@@ -45,6 +46,7 @@ public class BinaryComputingIterator implements Iterator<Double> {
     }
 
     public Double next() {
+
         Double nextFromFirst = this.firstIterator.hasNext() ? this.firstIterator.next() : this.firstDefault;
         Double nextFromSecond = this.secondIterator.hasNext() ? this.secondIterator.next() : this.secondDefault;
 

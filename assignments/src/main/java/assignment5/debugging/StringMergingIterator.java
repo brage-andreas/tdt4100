@@ -7,12 +7,12 @@ public class StringMergingIterator implements Iterator<String> {
 
 	private Iterator<String> first;
 	private Iterator<String> second;
-	private boolean turnSwitch;
+	private boolean useFirstIterator;
 
 	public StringMergingIterator(Iterator<String> first, Iterator<String> second) {
 		this.first = first;
 		this.second = second;
-		this.turnSwitch = true;
+		this.useFirstIterator = true;
 	}
 
 	@Override
@@ -29,12 +29,12 @@ public class StringMergingIterator implements Iterator<String> {
 
 		String result = null;
 
-		if (first.hasNext() && (turnSwitch || !second.hasNext())) {
+		if (first.hasNext() && (useFirstIterator || !second.hasNext())) {
 			result = first.next();
-			turnSwitch = false;
+			useFirstIterator = false;
 		} else if (second.hasNext()) {
 			result = second.next();
-			turnSwitch = true;
+			useFirstIterator = true;
 		}
 
 		return result;
