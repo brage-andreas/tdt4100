@@ -22,7 +22,26 @@ public class LargestElementFinder {
 
         // TODO: Complete the method according to JavaDoc
         
-        return 0;
+        // ==== GJØRE DETTE LIVE ====
+        if (numbers == null || numbers.isEmpty()) {
+            throw new IllegalArgumentException();
+        }
+
+        int max = numbers.getFirst();
+
+        for (var number : numbers){
+            if (number > max) {
+                max = number;
+            }
+        }
+
+        numbers.sort(Integer::compareTo);
+        int sortMax = numbers.getLast();
+
+        return numbers.stream().max(Integer::compareTo).get();
+        // ===========================
+
+        // return 0;
     }
 
 }

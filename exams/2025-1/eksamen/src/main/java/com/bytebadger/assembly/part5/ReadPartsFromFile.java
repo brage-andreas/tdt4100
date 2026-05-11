@@ -1,5 +1,10 @@
 package com.bytebadger.assembly.part5;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import no.ntnu.tdt4100.bytebadger.*;
 import no.ntnu.tdt4100.bytebadger.part5.ResultSet;
 
@@ -36,9 +41,22 @@ public class ReadPartsFromFile {
      */
 
     public static ComputerPart parseLine(String productLine, String splitRegexp) {
+        // Kopiert fra løsningsforslag
+        String[] parts = productLine.split(splitRegexp);
 
-        // TODO: Complete the method according to JavaDoc
-
+        if (parts.length != 4) {
+            return null;
+        }
+        try {
+            int productId = Integer.parseInt(parts[0]);
+            String productName = parts[1];
+            String manufacturer = parts[2];
+            double unitPrice = Double.parseDouble(parts[3]);
+            
+            return new ComputerPart(productId, productName, manufacturer, unitPrice);
+        } catch (NumberFormatException e) {
+            return null;
+        }
     }
 
     /**
@@ -78,7 +96,32 @@ public class ReadPartsFromFile {
     public static ResultSet read(InputStream stream) throws IOException {
 
         // TODO: Complete the method according to JavaDoc
+        
+        // ==== GJØRE DETTE LIVE ====
+        ResultSet result = new ResultSet();
 
+        var lines = ReadPartsFromFile.readStream(stream);
+
+        for (int i = 1; i < lines.length; i++) {
+            var currentLine = lines[i];
+            var part = ReadPartsFromFile.parseLine(currentLine, CSV_SPLIT_REGEX);
+
+            if (part == null) {
+                result.linesWithErrors().add(i);
+            } else {
+                result.parts().add(part);
+            }
+        }
+
+        return result;
+        // ===========================
+
+    }
+
+    public static String[] readStream(InputStream stream) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream))) {
+            return reader.lines().toArray(String[]::new);
+        }
     }
 
 }

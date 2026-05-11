@@ -1,5 +1,6 @@
 package com.bytebadger.assembly.part2;
 
+import java.util.HashMap;
 import java.util.Map;
 
 // TODO: Import relevant libraries
@@ -17,7 +18,22 @@ public class CharacterFrequency {
 
         // TODO: Complete the method according to JavaDoc
 
-        return null;
+        // ==== GJØRE DETTE LIVE ====
+        Map<Character, Integer> result = new HashMap<>();
+
+        if (input == null) {
+            return result;
+        }
+
+        for (var character : input.toCharArray()) {
+            int currentCount = result.getOrDefault(character, 0);
+            result.put(character, currentCount + 1);
+        }
+
+        return result;
+        // ===========================
+
+        //return null;
 
     }
 }

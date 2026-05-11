@@ -25,7 +25,30 @@ public class Anagram {
 
         // TODO: Complete the method according to JavaDoc
 
-        return true; // Placeholder return statement, replace with actual logic
+        // ==== GJØRE DETTE LIVE ====
+        if (str1 == null || str2 == null) {
+            return false;
+        }
+
+        if (str1.isEmpty() || str2.isEmpty()) {
+            return false;
+        }
+
+        if (str1.length() == 0 || str2.length() == 0) {
+            return false;
+        }
+
+        var strA = str1.replaceAll(" ", "").toLowerCase();
+        var strB = str2.replaceAll(" ", "").toLowerCase();
+
+
+        var a = CharacterFrequency.countCharacterFrequency(strA);
+        var b = CharacterFrequency.countCharacterFrequency(strB);
+
+        return a.equals(b);
+        // ===========================
+
+        //return true; // Placeholder return statement, replace with actual logic
 
     }
 }

@@ -1,5 +1,10 @@
 package com.bytebadger.assembly.part6;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import no.ntnu.tdt4100.bytebadger.part6.IBuildStatusObserver;
 
 // TODO: Import relevant libraries
@@ -40,6 +45,17 @@ public class BuildStatus {
     public BuildStatus(String buildID, String status) {
 
         // TODO: Implement constructor according to the JavaDoc.
+
+        // ==== GJØRE DETTE LIVE ====
+        if (buildID == null || status == null) {
+            throw new NullPointerException();
+        }
+
+        this.observers = new ArrayList<>();
+        this.buildID = buildID;
+        
+        setStatus(status);
+        // ===========================
     
     }
 
@@ -72,6 +88,20 @@ public class BuildStatus {
 
         // TODO: Implement the method according to the JavaDoc.
 
+        // ==== GJØRE DETTE LIVE ====
+        if (status == null) {
+            throw new NullPointerException();
+        }
+            
+        if (!BuildStatus.VALID_STATUSES.contains(status)) {
+            throw new IllegalArgumentException();
+        }
+
+        this.status = status;
+
+        this.notifyObservers(status);
+        // ==========================
+
     }
 
     /**
@@ -100,6 +130,12 @@ public class BuildStatus {
     private void notifyObservers(String status) {
 
         // TODO: Implement the method according to the JavaDoc.
+
+        // ==== GJØRE DETTE LIVE ====
+        for (var observer : this.observers) {
+            observer.updateBuildStatus(this.buildID, status);
+        }
+        // ==========================
 
     }
 
